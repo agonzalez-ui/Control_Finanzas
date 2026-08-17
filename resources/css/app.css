@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-zinc-50: #fafafa;
+    --color-zinc-100: #f5f5f5;
+    --color-zinc-200: #e5e5e5;
+    --color-zinc-300: #d4d4d4;
+    --color-zinc-400: #a3a3a3;
+    --color-zinc-500: #737373;
+    --color-zinc-600: #525252;
+    --color-zinc-700: #404040;
+    --color-zinc-800: #262626;
+    --color-zinc-900: #171717;
+    --color-zinc-950: #0a0a0a;
+
+    --color-accent: var(--color-violet-600);
+    --color-accent-content: var(--color-violet-600);
+    --color-accent-foreground: var(--color-white);
+
+    /* Gradiente de marca, reutilizado en el logo y en acentos de UI (barras de progreso, etc). */
+    --gradient-brand: linear-gradient(135deg, var(--color-cyan-600), var(--color-indigo-600) 45%, var(--color-violet-600) 75%, var(--color-fuchsia-600));
+
+    /* Fondo degradado de toda la app: sutil/claro por defecto. */
+    --gradient-page: linear-gradient(135deg, var(--color-cyan-50), var(--color-indigo-50) 40%, var(--color-violet-50) 70%, var(--color-fuchsia-50));
+
+    /* Superficie "vidrio" usada por las tarjetas (data-flux-card) sobre el fondo degradado. */
+    --glass-bg: color-mix(in srgb, var(--color-white) 65%, transparent);
+    --glass-border: color-mix(in srgb, var(--color-zinc-900) 8%, transparent);
+}
+
+@layer theme {
+    .dark {
+        --color-accent: var(--color-violet-400);
+        --color-accent-content: var(--color-violet-400);
+        --color-accent-foreground: var(--color-white);
+
+        --gradient-brand: linear-gradient(135deg, var(--color-cyan-400), var(--color-indigo-400) 45%, var(--color-violet-400) 75%, var(--color-fuchsia-400));
+
+        /* Versión oscura y saturada, inmersiva, del fondo de marca. */
+        --gradient-page: linear-gradient(135deg, #0e7490 0%, #4338ca 42%, #6d28d9 72%, #a21caf 100%);
+
+        --glass-bg: color-mix(in srgb, #0f0f28 62%, transparent);
+        --glass-border: color-mix(in srgb, var(--color-white) 14%, transparent);
+    }
+}
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply  !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+@layer utilities {
+    .bg-brand-gradient {
+        background-image: var(--gradient-brand);
+    }
+
+    .text-brand-gradient {
+        background-image: var(--gradient-brand);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .bg-page-gradient {
+        background-image: var(--gradient-page);
+        background-attachment: fixed;
+    }
+
+    .glass-panel {
+        background: var(--glass-bg);
+        border-color: var(--glass-border);
+        backdrop-filter: blur(20px);
+    }
+}
+
+/* Todas las tarjetas Flux (flux:card) flotan como vidrio sobre el fondo degradado.
+   El selector de Flux ya usa [:where(&)] (especificidad casi nula) precisamente
+   para que overrides como este ganen sin necesidad de !important. */
+[data-flux-card] {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* \[:where(&)\]:size-4 {
+    @apply size-4;
+} */
